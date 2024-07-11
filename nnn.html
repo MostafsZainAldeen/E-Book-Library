@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكتبة جامعة القدس</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #006600;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 8px;
+        }
+
+        button {
+            padding: 8px 15px;
+            background-color: #ffffff;
+            color: #006600;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #006600;
+            color: #ffffff;
+        }
+
+        #booksList {
+            margin: 20px;
+        }
+
+        .book {
+            border: 1px solid #006600;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .book a {
+            text-decoration: none;
+            color: #006600;
+        }
+
+        .book a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>مكتبة جامعة القدس</h1>
+        <form id="searchForm">
+            <input type="text" id="searchInput" placeholder="ابحث عن كتاب">
+            <button type="button" onclick="searchBooks()">ابحث</button>
+        </form>
+    </header>
+    
+    <div id="booksList"></div>
+
+    <script>
+        const booksData = [
+            { title: 'عنوان الكتاب 1', pdfLink: 'path/to/pdf1.pdf' },
+            { title: 'عنوان الكتاب 2', pdfLink: 'path/to/pdf2.pdf' },
+            // يمكنك إضافة المزيد من الكتب هنا
+        ];
+
+        document.addEventListener('DOMContentLoaded', showBooks);
+
+        function searchBooks() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filteredBooks = booksData.filter(book => book.title.toLowerCase().includes(searchTerm));
+            showBooks(filteredBooks);
+        }
+
+        function showBooks(books = booksData) {
+            const booksList = document.getElementById('booksList');
+            booksList.innerHTML = '';
+
+            books.forEach(book => {
+                const bookDiv = document.createElement('div');
+                bookDiv.classList.add('book');
+
+                const bookLink = document.createElement('a');
+                bookLink.href = book.pdfLink;
+                bookLink.textContent = book.title;
+
+                bookDiv.appendChild(bookLink);
+                booksList.appendChild(bookDiv);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Al-Quds University Library </title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #dedede;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #2e2e2e;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+         
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            text-align: center;
+        }
+        .book-container {
+            width: calc(33.33% - 20px);
+            border: 1px solid #ddd;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .book-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .download-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin-top: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="text"] {
+            padding: 8px;
+            box-sizing: border-box;
+            width: 70%;
+            margin-right: 10px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1> Al-Quds University Library </h1>
+        <div>
+            <input type="text" id="searchInput" placeholder="ابحث عن الكتب...">
+            <button onclick="searchBooks()">بحث</button>
+        </div>
+    </header>
+
+    <div class="container" id="bookContainer">
+        <!-- Books will be dynamically loaded here using JavaScript -->
+    </div>
+
+    <button onclick="showAllBooks()">العودة لكل الكتب</button>
+
+    <script>
+        // Dummy data for books
+        var allBooks = [
+            {
+                title: "  calc 1",
+                author: "الكاتب 1",
+                publicationDate: "يناير 2023",
+                description: "calc 1 for students",
+                coverImage: "cover2.jpg",
+                file: "https://engineering.futureuniversity.com/BOOKS%20FOR%20IT/William%20Stallings%20-%20Operating%20Systems%20(1).pdf"
+            },
+            {
+                title: "عنوان الكتاب 2",
+                author: "الكاتب 2",
+                publicationDate: "مارس 2023",
+                description: "وصف قصير للكتاب يمكن أن يحتوي على معلومات حول المحتوى والموضوع.",
+                coverImage: "cover2.jpg",
+                file: "رابط_الكتاب_2.pdf"
+            },
+            {
+                title: "عنوان الكتاب 3",
+                author: "الكاتب 3",
+                publicationDate: "أبريل 2023",
+                description: "وصف قصير للكتاب يمكن أن يحتوي على معلومات حول المحتوى والموضوع.",
+                coverImage: "cover2.jpg",
+                file: "رابط_الكتاب_3.pdf"
+            },
+            {
+                title: "عنوان الكتاب 2",
+                author: "الكاتب 2",
+                publicationDate: "مارس 2023",
+                description: "وصف قصير للكتاب يمكن أن يحتوي على معلومات حول المحتوى والموضوع.",
+                coverImage: "cover2.jpg",
+                file: "رابط_الكتاب_2.pdf"
+            },
+            {
+                title: "عنوان الكتاب 2",
+                author: "الكاتب 2",
+                publicationDate: "مارس 2023",
+                description: "وصف قصير للكتاب يمكن أن يحتوي على معلومات حول المحتوى والموضوع.",
+                coverImage: "cover2.jpg",
+                file: "رابط_الكتاب_2.pdf"
+            },
+            {
+                title: "عنوان الكتاب 2",
+                author: "الكاتب 2",
+                publicationDate: "مارس 2023",
+                description: "وصف قصير للكتاب يمكن أن يحتوي على معلومات حول المحتوى والموضوع.",
+                coverImage: "cover2.jpg",
+                file: "رابط_الكتاب_2.pdf"
+            },
+            {
+                title: "   nl mm",
+                author: "الكاتب 2",
+                publicationDate: "مارس 2023",
+                description: "وصف قصير للكتاب يمكن أن يحتوي على معلومات حول المحتوى والموضوع.",
+                coverImage: "cover2.jpg",
+                file: "رابط_الكتاب_2.pdf"
+            },
+            
+            
+            // You can add more books as needed
+        ];
+
+        var filteredBooks = allBooks;
+
+        // Function to dynamically load books
+        function loadBooks(booksToShow) {
+            var container = document.getElementById('bookContainer');
+            container.innerHTML = '';
+
+            booksToShow.forEach(function(book) {
+                var bookContainer = document.createElement('div');
+                bookContainer.className = 'book-container';
+
+                var coverImage = document.createElement('img');
+                coverImage.src = book.coverImage;
+                coverImage.alt = book.title;
+
+                var title = document.createElement('h2');
+                title.textContent = book.title;
+
+                var author = document.createElement('p');
+                author.textContent = 'المؤلف: ' + book.author;
+
+                var publicationDate = document.createElement('p');
+                publicationDate.textContent = 'تاريخ النشر: ' + book.publicationDate;
+
+                var description = document.createElement('p');
+                description.textContent = book.description;
+
+                var downloadButton = document.createElement('a');
+                downloadButton.href = book.file;
+                downloadButton.className = 'download-button';
+                downloadButton.textContent = 'تحميل الكتاب';
+
+                bookContainer.appendChild(coverImage);
+                bookContainer.appendChild(title);
+                bookContainer.appendChild(author);
+                bookContainer.appendChild(publicationDate);
+                bookContainer.appendChild(description);
+                bookContainer.appendChild(downloadButton);
+
+                container.appendChild(bookContainer);
+            });
+        }
+
+        // Call the function to load books when the page loads
+        window.onload = function() {
+            loadBooks(allBooks);
+        };
+
+        // Function to search for books
+        function searchBooks() {
+            var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            filteredBooks = allBooks.filter(function(book) {
+                return book.title.toLowerCase().includes(searchTerm) ||
+                       book.author.toLowerCase().includes(searchTerm) ||
+                       book.publicationDate.toLowerCase().includes(searchTerm) ||
+                       book.description.toLowerCase().includes(searchTerm);
+            });
+
+            loadBooks(filteredBooks);
+        }
+
+        // Function to show all books
+        function showAllBooks() {
+            document.getElementById('searchInput').value = '';
+            loadBooks(allBooks);
+        }
+    </script>
+
+</body>
+</html>
